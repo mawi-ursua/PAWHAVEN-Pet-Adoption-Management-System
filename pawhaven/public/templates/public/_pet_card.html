@@ -1,0 +1,12 @@
+<article class="pet-card">
+  {% if pet.photo %}
+    <img src="{{ pet.photo.url }}" alt="{{ pet.name }}">
+  {% else %}
+    <div class="pet-photo-placeholder" aria-hidden="true">&#128062;</div>
+  {% endif %}
+  <h3>{{ pet.name }}</h3>
+  <p class="pet-status"><span class="check">&#10003;</span> {{ pet.status_label }}</p>
+  {% if pet.can_adopt %}
+    <a class="btn btn-dark btn-small" href="{% url 'apply' pet.pk %}">Adopt</a>
+  {% endif %}
+</article>

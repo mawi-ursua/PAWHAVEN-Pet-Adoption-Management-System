@@ -1,0 +1,18 @@
+{% extends 'public/base.html' %}
+{% load static %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <h1>EVERY PET<br>DESERVES A HOME</h1>
+    <p>WE CONNECT LOVING HEARTS WITH LOYAL COMPANIONS AND BUILD A KINDER WORLD TOGETHER</p>
+    <div class="hero-stats">
+      <span>🏠 Adopt<br><small>Start a life</small></span>
+      <span>🤝 Support<br><small>Make a difference</small></span>
+      <span>👥 Community<br><small>Heal together</small></span>
+    </div>
+    <a class="btn btn-outline" href="{% url 'public:pets' %}">ADOPT A PET</a>
+    <a class="btn btn-navy" href="{% url 'public:report' %}">REPORT A RESCUE</a>
+  </div>
+  <img class="hero-img" src="{% static 'public/img/hero-cat.jpg' %}" alt="Sleeping cat">
+</section>
+{% endblock %}

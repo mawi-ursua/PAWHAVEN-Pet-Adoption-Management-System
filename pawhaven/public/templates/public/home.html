@@ -1,0 +1,31 @@
+{% extends "public/base.html" %}
+{% load static %}
+{% block title %}PawHaven | Every pet deserves a home{% endblock %}
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+<main class="hero">
+  <div class="hero-photo">
+    {# Add static/img/hero-room.jpg (shelter interior photo) #}
+    <img src="{% static 'img/hero-room.jpg' %}" alt="" onerror="this.style.display='none'">
+  </div>
+  <div class="hero-panel">
+    <div class="hero-copy">
+      <h1>Every pet<br>deserves a home</h1>
+      <p class="tagline">We connect loving hearts with loyal companions<br>and build a kinder world together</p>
+      <hr>
+      <ul class="pillars">
+        <li><strong>Adopt</strong><small>Save a life</small></li>
+        <li><span class="pillar-icon">&#9825;</span><strong>Support</strong><small>Make a difference</small></li>
+        <li><span class="pillar-icon">&#9786;</span><strong>Community</strong><small>We're in this together</small></li>
+      </ul>
+      <div class="hero-buttons">
+        <a class="btn btn-outline" href="{% url 'adoptable_pets' %}">Adopt a Pet</a>
+        <a class="btn btn-dark" href="{% url 'report_rescue' %}">Report a Rescue</a>
+      </div>
+    </div>
+  </div>
+  {# Add static/img/hero-cat.png (transparent cutout of the cat) #}
+  <img class="hero-cat" src="{% static 'img/hero-cat.png' %}" alt="" onerror="this.style.display='none'">
+</main>
+{% endblock %}

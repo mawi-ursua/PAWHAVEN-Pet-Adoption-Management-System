@@ -1,0 +1,26 @@
+{% extends "public/base.html" %}
+{% block title %}Contact | PawHaven{% endblock %}
+{% block body_class %}page-contact{% endblock %}
+
+{% block content %}
+<main>
+  <section class="contact-banner"><h1>Contact us</h1></section>
+  <section class="contact-body">
+    <ul class="contact-info">
+      <li><span>&#9906;</span> {{ shelter.address }}</li>
+      <li><span>&#9742;</span> {{ shelter.contact_number }}</li>
+      <li><span>&#9993;</span> {{ shelter.email }}</li>
+    </ul>
+    <form method="post" class="contact-form">
+      {% csrf_token %}
+      <label for="{{ form.name.id_for_label }}">Name</label>
+      {{ form.name }}{{ form.name.errors }}
+      <label for="{{ form.email.id_for_label }}">Email</label>
+      {{ form.email }}{{ form.email.errors }}
+      <label for="{{ form.message.id_for_label }}">Message</label>
+      {{ form.message }}{{ form.message.errors }}
+      <button type="submit" class="btn btn-dark btn-small">Submit</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

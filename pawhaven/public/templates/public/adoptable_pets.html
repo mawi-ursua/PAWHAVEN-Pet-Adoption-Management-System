@@ -1,0 +1,25 @@
+{% extends "public/base.html" %}
+{% block title %}Adoptable Pets | PawHaven{% endblock %}
+{% block body_class %}page-pets{% endblock %}
+
+{% block content %}
+<main class="pets">
+  <h1 class="pets-title">Your friend waits<br>for you</h1>
+
+  <section class="pet-section">
+    <h2 class="pill-label">Cats</h2>
+    <div class="pet-grid">
+      {% for pet in cats %}{% include "public/_pet_card.html" %}
+      {% empty %}<p class="empty">No cats are available right now. Please check back soon!</p>{% endfor %}
+    </div>
+  </section>
+
+  <section class="pet-section pet-section-right">
+    <h2 class="pill-label pill-right">Dogs</h2>
+    <div class="pet-grid">
+      {% for pet in dogs %}{% include "public/_pet_card.html" %}
+      {% empty %}<p class="empty">No dogs are available right now. Please check back soon!</p>{% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}

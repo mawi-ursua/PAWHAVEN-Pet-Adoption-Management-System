@@ -1,0 +1,27 @@
+{% extends "public/base.html" %}
+{% block title %}Adopt {{ pet.name }} | PawHaven{% endblock %}
+{% block body_class %}page-contact{% endblock %}
+
+{% block content %}
+<main>
+  <section class="contact-body" style="min-height: calc(100vh - 56px); align-items: flex-start;">
+    <div class="contact-info">
+      {% if pet.photo %}<img src="{{ pet.photo.url }}" alt="{{ pet.name }}" style="width:100%;border-radius:16px;margin-bottom:16px;">{% endif %}
+      <h2 style="font-size:1.6rem;">Adopt {{ pet.name }}</h2>
+      <p style="font-weight:500;">{{ pet.status_label }}</p>
+    </div>
+    <form method="post" class="contact-form">
+      {% csrf_token %}
+      <label for="{{ form.applicant_name.id_for_label }}">Full name</label>
+      {{ form.applicant_name }}{{ form.applicant_name.errors }}
+      <label for="{{ form.email.id_for_label }}">Email</label>
+      {{ form.email }}{{ form.email.errors }}
+      <label for="{{ form.phone.id_for_label }}">Phone (optional)</label>
+      {{ form.phone }}{{ form.phone.errors }}
+      <label for="{{ form.home_experience.id_for_label }}">Tell us about your home and experience with pets</label>
+      {{ form.home_experience }}{{ form.home_experience.errors }}
+      <button type="submit" class="btn btn-dark btn-small">Submit application</button>
+    </form>
+  </section>
+</main>
+{% endblock %}
