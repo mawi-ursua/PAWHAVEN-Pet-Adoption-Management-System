@@ -23,11 +23,11 @@ Sign in at `/manage/login/` with a superuser/staff account.
 
 | URL | Page |
 |---|---|
-| `/manage/` | Dashboard |
-| `/manage/pets/` | Adoptable Pets: filter, register, edit, delete |
-| `/manage/applications/` | Adoption Applications: filter, approve, reject |
-| `/manage/rescue/` | Rescue Control: filter, dispatch, resolve |
-| `/manage/settings/` | Shelter info, admin profile, change password |
+| `/pawhaven-admin/` | Dashboard |
+| `/pawhaven-admin/pets/` | Adoptable Pets: filter, register, edit, delete |
+| `/pawhaven-admin/applications/` | Adoption Applications: filter, approve, reject |
+| `/pawhaven-admin/rescue/` | Rescue Control: filter, dispatch, resolve |
+| `/pawhaven-admin/settings/` | Shelter info, admin profile, change password |
 
 Approving an application marks the pet as Adopted.
 Django's built-in admin is still available at `/admin/`.

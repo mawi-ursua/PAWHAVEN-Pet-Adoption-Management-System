@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('manage/', include('private.urls')),
+    path('pawhaven-admin/', include('private.urls')),
     path('', include('public.urls')),  
 ]
 
