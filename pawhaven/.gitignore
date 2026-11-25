@@ -1,25 +1,7 @@
-# Virtual environment
-venv/
-.venv/
-env/
-
-# Python
 __pycache__/
-*.py[cod]
-*.egg-info/
-
-# Django
+*.pyc
 db.sqlite3
-db.sqlite3-journal
 media/
 staticfiles/
-*.log
-
-# Secrets and environment
+.venv/
 .env
-
-# Editor / OS
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db

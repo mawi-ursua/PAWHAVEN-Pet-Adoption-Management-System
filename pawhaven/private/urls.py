@@ -4,7 +4,7 @@ from django.urls import path
 from . import views
 from .forms import StaffAuthenticationForm
 
-app_name = "manager"
+app_name = "private"
 
 urlpatterns = [
     path(
@@ -17,7 +17,7 @@ urlpatterns = [
     ),
     path(
         "logout/",
-        auth_views.LogoutView.as_view(next_page="manager:login"),
+        auth_views.LogoutView.as_view(next_page="private:login"),
         name="logout",
     ),
     path("", views.dashboard, name="dashboard"),

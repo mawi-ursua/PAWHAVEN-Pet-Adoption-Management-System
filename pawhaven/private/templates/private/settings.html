@@ -1,0 +1,46 @@
+{% extends "private/base.html" %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div><h1>Shelter Settings</h1><small>Manage shelter information, adoption rules, and staff members all in one place.</small></div>
+  <button class="m-btn m-btn-dark" type="submit" form="shelter-form" name="save_shelter" value="1">Save Settings</button>
+</section>
+
+<section class="m-card">
+  <h2 class="card-title">&#8962; Shelter Information</h2>
+  <p class="card-sub">Update your shelter details</p>
+  <form id="shelter-form" method="post" class="stack">
+    {% csrf_token %}
+    <input type="hidden" name="save_shelter" value="1">
+    {{ shelter_form.non_field_errors }}
+    <div class="f-row">
+      <div class="f"><label for="{{ shelter_form.name.id_for_label }}">Shelter Name</label>{{ shelter_form.name }}{{ shelter_form.name.errors }}</div>
+      <div class="f"><label for="{{ shelter_form.address.id_for_label }}">Address</label>{{ shelter_form.address }}{{ shelter_form.address.errors }}</div>
+    </div>
+    <div class="f-row">
+      <div class="f"><label for="{{ shelter_form.contact_number.id_for_label }}">Contact Number</label>{{ shelter_form.contact_number }}{{ shelter_form.contact_number.errors }}</div>
+      <div class="f"><label for="{{ shelter_form.email.id_for_label }}">Email Address</label>{{ shelter_form.email }}{{ shelter_form.email.errors }}</div>
+    </div>
+    <div class="f"><label for="{{ shelter_form.description.id_for_label }}">Description</label>{{ shelter_form.description }}{{ shelter_form.description.errors }}</div>
+  </form>
+</section>
+
+<section class="m-card">
+  <h2 class="card-title">&#128100; Admin Account</h2>
+  <p class="card-sub">Update your account details</p>
+  <form method="post" class="stack">
+    {% csrf_token %}
+    <input type="hidden" name="save_profile" value="1">
+    {{ profile_form.non_field_errors }}
+    <div class="f-row">
+      <div class="f"><label for="{{ profile_form.full_name.id_for_label }}">Full Name</label>{{ profile_form.full_name }}{{ profile_form.full_name.errors }}</div>
+      <div class="f"><label for="{{ profile_form.email.id_for_label }}">Email Address</label>{{ profile_form.email }}{{ profile_form.email.errors }}</div>
+    </div>
+    <div class="form-actions right">
+      <button class="m-btn m-btn-slate" type="submit">Update Profile</button>
+      <a class="m-btn m-btn-slate" href="{% url 'private:password_change' %}">Change Password</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

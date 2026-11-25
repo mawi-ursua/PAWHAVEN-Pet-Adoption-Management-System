@@ -1,0 +1,27 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login | PawHaven</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/private.css' %}">
+</head>
+<body class="login-body">
+  <form method="post" class="login-card">
+    {% csrf_token %}
+    <div class="m-brand login-brand">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3Z" fill="currentColor"/></svg>
+      <span><em>PawHaven</em><small>Admin Management</small></span>
+    </div>
+    <h1>Admin sign in</h1>
+    {{ form.non_field_errors }}
+    <label for="{{ form.username.id_for_label }}">Username</label>
+    {{ form.username }}
+    <label for="{{ form.password.id_for_label }}">Password</label>
+    {{ form.password }}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="m-btn m-btn-dark">Sign in</button>
+  </form>
+</body>
+</html>

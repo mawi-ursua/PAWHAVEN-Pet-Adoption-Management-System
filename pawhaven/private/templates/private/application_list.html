@@ -1,0 +1,38 @@
+{% extends "private/base.html" %}
+{% block title %}Applications{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div><h1>Adoption Applications</h1><small>Review adoption questionnaires and applications</small></div>
+  <div class="pill-tabs">
+    {% for value, label in filters %}
+      <a href="?status={{ value }}" class="{% if status == value %}on{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="m-card">
+  <table class="m-table">
+    <thead><tr><th>Applicant</th><th>Requested Pet</th><th>Home and Experience</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for app in applications %}
+      <tr>
+        <td>{{ app.applicant_name }}<br><small>{{ app.email }}{% if app.phone %} · {{ app.phone }}{% endif %}</small></td>
+        <td>{{ app.pet.name }}</td>
+        <td class="wrap">{{ app.home_experience|truncatechars:120 }}</td>
+        <td>{{ app.created_at|date:"m-d-Y" }}</td>
+        <td><span class="tag tag-{{ app.status }}">{{ app.get_status_display }}</span></td>
+        <td class="actions">
+          {% if app.status == 'pending' %}
+          <form method="post" action="{% url 'private:application_decide' app.pk 'approved' %}">{% csrf_token %}<button class="tag tag-approved btn-tag" type="submit">Approve</button></form>
+          <form method="post" action="{% url 'private:application_decide' app.pk 'rejected' %}">{% csrf_token %}<button class="tag tag-rejected btn-tag" type="submit">Reject</button></form>
+          {% else %}&mdash;{% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="empty">No applications found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

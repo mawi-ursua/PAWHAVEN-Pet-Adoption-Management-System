@@ -1,0 +1,44 @@
+{% extends "private/base.html" %}
+{% block title %}Rescue{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div><h1>Report a pet in need - Rescue control</h1><small>Emergency Dispatch</small></div>
+</section>
+
+<section class="m-card">
+  <div class="card-head">
+    <div><h2 class="card-title">Incoming Rescue Reports</h2><p class="card-sub">Field reports submitted by citizens and volunteers</p></div>
+    <div class="pill-tabs small">
+      {% for value, label in filters %}
+        <a href="?filter={{ value }}" class="{% if filter == value %}on{% endif %}">{{ label }}</a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="report-list">
+    {% for r in reports %}
+    <article class="report {% if r.urgency == 'high' %}critical{% endif %}">
+      <a href="{{ r.image.url }}" target="_blank" rel="noopener"><img src="{{ r.image.url }}" alt="Reported animal"></a>
+      <div class="report-body">
+        <strong>{{ r.location }}</strong>
+        <span class="tag tag-urg-{{ r.urgency }}">{{ r.get_urgency_display }}</span>
+        <span class="tag tag-{{ r.status }}">{{ r.get_status_display }}</span>
+        <p>{{ r.description|default:"No description provided." }}</p>
+        <small>{{ r.created_at|date:"m-d-Y H:i" }}</small>
+      </div>
+      <div class="report-actions">
+        {% if r.status == 'new' %}
+        <form method="post" action="{% url 'private:rescue_update' r.pk 'dispatched' %}">{% csrf_token %}<button class="m-btn m-btn-small m-btn-dark" type="submit">Dispatch</button></form>
+        {% endif %}
+        {% if r.status != 'resolved' %}
+        <form method="post" action="{% url 'private:rescue_update' r.pk 'resolved' %}">{% csrf_token %}<button class="m-btn m-btn-small m-btn-light" type="submit">Mark resolved</button></form>
+        {% endif %}
+      </div>
+    </article>
+    {% empty %}
+    <p class="empty">No rescue reports found.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

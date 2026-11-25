@@ -1,0 +1,30 @@
+{% extends "private/base.html" %}
+{% block title %}{% if editing %}Edit Pet{% else %}Register New Pet{% endif %}{% endblock %}
+
+{% block content %}
+<section class="form-card">
+  <div class="form-head">
+    <h1>{% if editing %}Edit {{ pet.name }}{% else %}Register new pet{% endif %}</h1>
+    <a href="{% url 'private:pets' %}" class="close" title="Back to list">&#10005;</a>
+  </div>
+  <form method="post" enctype="multipart/form-data" class="stack">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="f"><label for="{{ form.name.id_for_label }}">Pet Name</label>{{ form.name }}{{ form.name.errors }}</div>
+    <div class="f-row">
+      <div class="f"><label for="{{ form.species.id_for_label }}">Category</label>{{ form.species }}{{ form.species.errors }}</div>
+      <div class="f"><label for="{{ form.status.id_for_label }}">Status</label>{{ form.status }}{{ form.status.errors }}</div>
+    </div>
+    <div class="f-row three">
+      <div class="f"><label for="{{ form.age_months.id_for_label }}">Age (months)</label>{{ form.age_months }}{{ form.age_months.errors }}</div>
+      <div class="f"><label for="{{ form.gender.id_for_label }}">Gender</label>{{ form.gender }}{{ form.gender.errors }}</div>
+      <div class="f"><label for="{{ form.breed.id_for_label }}">Breed</label>{{ form.breed }}{{ form.breed.errors }}</div>
+    </div>
+    <div class="f"><label for="{{ form.photo.id_for_label }}">Photo</label>{{ form.photo }}{{ form.photo.errors }}</div>
+    <div class="f"><label for="{{ form.description.id_for_label }}">Description</label>{{ form.description }}{{ form.description.errors }}</div>
+    <div class="form-actions">
+      <button class="m-btn m-btn-dark" type="submit">{% if editing %}Save changes{% else %}Register pet{% endif %}</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin{% endblock %} | PawHaven Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/private.css' %}">
+</head>
+<body>
+  <header class="m-topbar">
+    <a class="m-brand" href="{% url 'private:dashboard' %}">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.3 8 11 4.6-1.7 8-6 8-11V5l-8-3Z" fill="currentColor"/></svg>
+      <span><em>PawHaven</em><small>Admin Management</small></span>
+    </a>
+    <div class="m-user">
+      <span>{{ request.user.get_full_name|default:request.user.get_username }}</span>
+      <form method="post" action="{% url 'private:logout' %}">{% csrf_token %}<button type="submit" class="link-btn">Log out</button></form>
+    </div>
+  </header>
+
+  <div class="m-layout">
+    <aside class="m-sidebar">
+      <a href="{% url 'private:dashboard' %}" class="{% if section == 'dashboard' %}active{% endif %}"><i>&#9641;</i> Dashboard</a>
+      <a href="{% url 'private:pets' %}" class="{% if section == 'pets' %}active{% endif %}"><i>&#128062;</i> Adoptable Pets</a>
+      <a href="{% url 'private:applications' %}" class="{% if section == 'applications' %}active{% endif %}"><i>&#128221;</i> Applications</a>
+      <a href="{% url 'private:rescue' %}" class="{% if section == 'rescue' %}active{% endif %}"><i>&#9650;</i> Rescue</a>
+      <a href="{% url 'private:settings' %}" class="{% if section == 'settings' %}active{% endif %}"><i>&#9881;</i> Settings</a>
+    </aside>
+
+    <main class="m-main">
+      {% if messages %}
+      <ul class="m-flash">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

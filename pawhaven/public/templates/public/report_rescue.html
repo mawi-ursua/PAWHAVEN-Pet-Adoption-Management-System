@@ -1,18 +1,39 @@
-{% extends 'public/base.html' %}
-{% load static %}
+{% extends "public/base.html" %}
+{% block title %}Report a Rescue | PawHaven{% endblock %}
+{% block body_class %}page-report{% endblock %}
+
 {% block content %}
-<section class="hero">
-  <div class="hero-text">
-    <h1>EVERY PET<br>DESERVES A HOME</h1>
-    <p>WE CONNECT LOVING HEARTS WITH LOYAL COMPANIONS AND BUILD A KINDER WORLD TOGETHER</p>
-    <div class="hero-stats">
-      <span>🏠 Adopt<br><small>Start a life</small></span>
-      <span>🤝 Support<br><small>Make a difference</small></span>
-      <span>👥 Community<br><small>Heal together</small></span>
+<main class="report">
+  <h1>Report a pet in need</h1>
+  <form method="post" enctype="multipart/form-data" class="report-card">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="field pill">
+      {{ form.location }}
     </div>
-    <a class="btn btn-outline" href="{% url 'public:pets' %}">ADOPT A PET</a>
-    <a class="btn btn-navy" href="{% url 'public:report' %}">REPORT A RESCUE</a>
-  </div>
-  <img class="hero-img" src="{% static 'public/img/hero-cat.jpg' %}" alt="Sleeping cat">
-</section>
+    {{ form.location.errors }}
+
+    <div class="field pill file-field">
+      <label for="{{ form.image.id_for_label }}">Upload image of animal</label>
+      {{ form.image }}
+    </div>
+    {{ form.image.errors }}
+
+    <div class="urgency-row">
+      <span class="pill urgency-label">Urgency</span>
+      <div class="urgency-options">
+        {% for radio in form.urgency %}
+          <label>{{ radio.tag }} {{ radio.choice_label }}</label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="field box">
+      {{ form.description }}
+    </div>
+
+    <div class="center"><button type="submit" class="btn btn-dark">Submit</button></div>
+  </form>
+</main>
 {% endblock %}

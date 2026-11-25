@@ -1,0 +1,46 @@
+{% extends "private/base.html" %}
+{% block title %}Adoptable Pets{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div><small>Adoptable shelter animals</small><h1>Your friend waits for you</h1></div>
+  <a class="m-btn m-btn-dark" href="{% url 'private:pet_create' %}">+ Register new pet</a>
+</section>
+
+<form method="get" class="filter-bar">
+  <div class="tabs">
+    {% for value, label in categories %}
+      <a href="?category={{ value }}{% if status %}&status={{ status }}{% endif %}" class="{% if category == value %}on{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+  <div class="status-filter">
+    Status:
+    <input type="hidden" name="category" value="{{ category }}">
+    <select name="status" onchange="this.form.submit()">
+      <option value="">All Statuses</option>
+      {% for value, label in statuses %}
+        <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</form>
+
+<section class="m-card pet-admin-grid">
+  {% for pet in pets %}
+  <article class="admin-pet">
+    {% if pet.photo %}<img src="{{ pet.photo.url }}" alt="{{ pet.name }}">{% else %}<div class="ph">&#128062;</div>{% endif %}
+    <h3>{{ pet.name }}</h3>
+    <p>&#10003; {{ pet.status_label }}</p>
+    <p class="meta">{{ pet.get_species_display }}{% if pet.breed %} · {{ pet.breed }}{% endif %}{% if pet.age_label %} · {{ pet.age_label }}{% endif %}</p>
+    <div class="row-actions">
+      <a class="m-btn m-btn-small m-btn-dark" href="{% url 'private:pet_edit' pet.pk %}">Edit</a>
+      <form method="post" action="{% url 'private:pet_delete' pet.pk %}" onsubmit="return confirm('Remove {{ pet.name|escapejs }}?');">
+        {% csrf_token %}<button class="m-btn m-btn-small m-btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </article>
+  {% empty %}
+  <p class="empty">No pets match these filters.</p>
+  {% endfor %}
+</section>
+{% endblock %}

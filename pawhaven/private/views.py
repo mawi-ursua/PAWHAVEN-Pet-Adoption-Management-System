@@ -16,7 +16,7 @@ from .forms import (
 
 def staff_required(view):
     return user_passes_test(
-        lambda u: u.is_active and u.is_staff, login_url="manager:login"
+        lambda u: u.is_active and u.is_staff, login_url="private:login"
     )(view)
 
 
@@ -85,7 +85,7 @@ def pet_create(request):
     if request.method == "POST" and form.is_valid():
         pet = form.save()
         messages.success(request, f"{pet.name} was registered.")
-        return redirect("manager:pets")
+        return redirect("private:pets")
     return render(
         request,
         "private/pet_form.html",
@@ -100,7 +100,7 @@ def pet_edit(request, pk):
     if request.method == "POST" and form.is_valid():
         form.save()
         messages.success(request, f"{pet.name} was updated.")
-        return redirect("manager:pets")
+        return redirect("private:pets")
     return render(
         request,
         "private/pet_form.html",
@@ -115,7 +115,7 @@ def pet_delete(request, pk):
     name = pet.name
     pet.delete()
     messages.success(request, f"{name} was removed.")
-    return redirect("manager:pets")
+    return redirect("private:pets")
 
 
 # ------------------------------------------------------------- Applications
@@ -148,7 +148,7 @@ def application_decide(request, pk, decision):
         AdoptionApplication.Status.APPROVED,
         AdoptionApplication.Status.REJECTED,
     ):
-        return redirect("manager:applications")
+        return redirect("private:applications")
 
     application.status = decision
     application.save(update_fields=["status"])
@@ -159,7 +159,7 @@ def application_decide(request, pk, decision):
         request,
         f"Application from {application.applicant_name} marked {decision}.",
     )
-    return redirect("manager:applications")
+    return redirect("private:applications")
 
 
 # ------------------------------------------------------------------- Rescue
@@ -197,7 +197,7 @@ def rescue_update(request, pk, new_status):
         report.status = new_status
         report.save(update_fields=["status"])
         messages.success(request, f"Report marked {report.get_status_display().lower()}.")
-    return redirect("manager:rescue")
+    return redirect("private:rescue")
 
 
 # ----------------------------------------------------------------- Settings
@@ -213,13 +213,13 @@ def settings_view(request):
             if shelter_form.is_valid():
                 shelter_form.save()
                 messages.success(request, "Shelter settings saved.")
-                return redirect("manager:settings")
+                return redirect("private:settings")
         elif "save_profile" in request.POST:
             profile_form = AdminProfileForm(request.POST, user=request.user)
             if profile_form.is_valid():
                 profile_form.save()
                 messages.success(request, "Profile updated.")
-                return redirect("manager:settings")
+                return redirect("private:settings")
 
     return render(
         request,
@@ -239,7 +239,7 @@ def password_change(request):
         user = form.save()
         update_session_auth_hash(request, user)  # keep the admin logged in
         messages.success(request, "Password changed.")
-        return redirect("manager:settings")
+        return redirect("private:settings")
     return render(
         request,
         "private/password_change.html",

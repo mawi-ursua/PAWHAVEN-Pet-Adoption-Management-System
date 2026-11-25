@@ -1,0 +1,41 @@
+{% extends "private/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="banner">
+  <span class="chip chip-dark">Shelter Admin Portal</span>
+  <h1>Every pets deserve a home</h1>
+  <p>We connect loving hearts with loyal companions and build a kinder world together</p>
+  <div class="banner-actions">
+    <a class="m-btn m-btn-light" href="{% url 'private:pet_create' %}">Adopt a Pet</a>
+    <a class="m-btn m-btn-dark" href="{% url 'private:rescue' %}">Report a Rescue</a>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat"><span class="tag tag-green">Active</span><strong>{{ total_pets }}</strong><small>Total Pets Managed</small></div>
+  <div class="stat"><span class="tag tag-yellow">Action Needed</span><strong>{{ pending_applications }}</strong><small>Pending Applications</small></div>
+  <div class="stat"><span class="tag tag-red">Emergency</span><strong>{{ rescue_requests }}</strong><small>Rescue Requests</small></div>
+</section>
+
+<section class="m-card">
+  <h2 class="card-title">Recent Adoption Request</h2>
+  <p class="card-sub">Applicant questionnaires ready for decision</p>
+  <table class="m-table">
+    <thead><tr><th>Applicant</th><th>Pet</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for app in recent_applications %}
+      <tr>
+        <td>{{ app.applicant_name }}</td>
+        <td>{{ app.pet.name }}</td>
+        <td>{{ app.created_at|date:"m-d-Y" }}</td>
+        <td><span class="tag tag-yellow">{{ app.get_status_display }}</span></td>
+        <td><a href="{% url 'private:applications' %}?status=pending" class="review">Review</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="empty">No pending applications.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
