@@ -108,6 +108,12 @@ class RescueReport(models.Model):
         RESOLVED = "resolved", "Resolved"
 
     location = models.CharField(max_length=255)
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
     image = models.FileField(upload_to="reports/")
     urgency = models.CharField(
         max_length=10, choices=Urgency.choices, default=Urgency.LOW

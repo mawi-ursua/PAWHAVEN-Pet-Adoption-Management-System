@@ -123,8 +123,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-LOGIN_URL = "manager:login"
-LOGIN_REDIRECT_URL = "manager:dashboard"
+LOGIN_REDIRECT_URL = 'private:dashboard'
+LOGOUT_REDIRECT_URL = 'private:login'
+LOGIN_URL = 'private:login'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

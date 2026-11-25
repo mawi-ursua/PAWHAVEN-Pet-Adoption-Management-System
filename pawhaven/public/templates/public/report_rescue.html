@@ -2,6 +2,20 @@
 {% block title %}Report a Rescue | PawHaven{% endblock %}
 {% block body_class %}page-report{% endblock %}
 
+{% block extra_head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 220px;
+      width: 100%;
+      border-radius: 16px;
+      margin-top: 12px;
+      margin-bottom: 20px;
+      z-index: 1;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
 <main class="report">
   <h1>Report a pet in need</h1>
@@ -13,6 +27,10 @@
       {{ form.location }}
     </div>
     {{ form.location.errors }}
+
+    <div id="map"></div>
+    <input type="hidden" id="id_latitude" name="latitude" value="{{ form.latitude.value|default:'' }}">
+    <input type="hidden" id="id_longitude" name="longitude" value="{{ form.longitude.value|default:'' }}">
 
     <div class="field pill file-field">
       <label for="{{ form.image.id_for_label }}">Upload image of animal</label>
@@ -33,7 +51,87 @@
       {{ form.description }}
     </div>
 
-    <div class="center"><button type="submit" class="btn btn-dark">Submit</button></div>
+    <div class="center">
+      <button type="submit" class="btn btn-dark">Submit</button>
+    </div>
   </form>
 </main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const mapContainer = document.getElementById("map");
+    if (!mapContainer) return;
+
+    const defaultLat = 13.937;
+    const defaultLng = 121.617;
+
+    const map = L.map(mapContainer).setView([defaultLat, defaultLng], 13);
+
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+      iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+      shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
+    });
+
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 19,
+      attribution: "Tiles &copy; Esri"
+    }).addTo(map);
+
+    let marker;
+    const locationInput =
+      document.querySelector(".field.pill input") ||
+      document.querySelector('input[name="location"]');
+    const latInput = document.getElementById("id_latitude");
+    const lngInput = document.getElementById("id_longitude");
+
+    function updateLocationFields(lat, lng) {
+      if (latInput) latInput.value = lat.toFixed(6);
+      if (lngInput) lngInput.value = lng.toFixed(6);
+
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          if (data.display_name && locationInput) {
+            locationInput.value = data.display_name;
+          }
+        })
+        .catch(function (err) {
+          console.log("Geocoding error:", err);
+        });
+    }
+
+    map.on("click", function (e) {
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
+
+      if (marker) {
+        marker.setLatLng(e.latlng);
+      } else {
+        marker = L.marker(e.latlng, { draggable: true }).addTo(map);
+        marker.on("dragend", function () {
+          const position = marker.getLatLng();
+          updateLocationFields(position.lat, position.lng);
+        });
+      }
+
+      updateLocationFields(lat, lng);
+    });
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          map.setView([position.coords.latitude, position.coords.longitude], 15);
+        },
+        function () {
+          // Keep default coordinates if denied or unavailable
+        }
+      );
+    }
+  });
+</script>
 {% endblock %}
