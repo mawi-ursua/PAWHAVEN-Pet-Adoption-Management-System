@@ -1,11 +1,16 @@
-# PawHaven
+## Setup
 
-Django site for pet adoption and rescue reporting, built from the PawHaven wireframes.
+    python -m venv .venv
+    venv\Scripts\activate
+    pip install -r requirements.txt
+    python manage.py makemigrations public
+    python manage.py migrate
+    python manage.py createsuperuser
+    python manage.py runserver
 
 ## Public pages
 
 | URL | Page |
-|---|---|
 | `/` | Home |
 | `/adoptable-pets/` | Adoptable Pets (cats and dogs) |
 | `/adopt/<id>/` | Adoption application for one pet |
@@ -27,17 +32,6 @@ Sign in at `/manage/login/` with a superuser/staff account.
 Approving an application marks the pet as Adopted.
 Django's built-in admin is still available at `/admin/`.
 
-## Setup
-
-    python -m venv .venv
-    source .venv/bin/activate        (Windows: .venv\Scripts\activate)
-    pip install -r requirements.txt
-    python manage.py makemigrations public
-    python manage.py migrate
-    python manage.py createsuperuser
-    python manage.py runserver
-
-Then open http://127.0.0.1:8000/manage/login/.
 
 ## Images to add
 
